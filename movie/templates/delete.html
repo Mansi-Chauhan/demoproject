@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* ul {
+    list-style: square inside url("sqpurple.gif");
+  } */
+
+  li{
+    font-size: 20px;
+    padding: 3px;
+    padding-left: 15px;
+  }
+  </style>
+  <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      transition: 0.3s;
+      width: 35%;
+      border-radius: 12px;
+      background-color: aliceblue;
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    
+    img {
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .container {
+      padding: 2px 16px;
+    }
+    </style>
+  <div class="container">
+
+
+<h1>{{status}}</h1>
+<br/>
+<ul>
+
+{% for res in results %}
+<br/>
+<!-- <div class="card">
+    <li>Name : {{ res.name }}</li>
+    <li>Director :{{ res.director }}</li>
+    <li>Imdb Score :{{ res.imdb_score }}</li>
+    <li>99Popularity :{{ res.dire99popularity }}</li>
+    <li>Genre :{{ res.genre }}</li>
+  </div> -->
+{% endfor %}
+
+</ul>
+
+<a href="/movie/getpictures/?id=all">home page</a>
+
+</div>
+
+{% endblock %}
