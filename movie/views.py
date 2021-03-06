@@ -41,7 +41,7 @@ def getMovies(request):
         if(str(id_obj).lower()=='all'):
             '''
             To Get all The Movies.
-            Api_Endpoint: http://127.0.0.1:7000/movie/getpictures/?id=all
+            Api_Endpoint: http://127.0.0.1:8000/movie/getpictures/?id=all
             Response: Object with List Of Data
 
             '''
@@ -55,7 +55,7 @@ def getMovies(request):
             print('else')
             '''
                 To Get Movies By id.
-                Api_Endpoint: http://127.0.0.1:7000/movie/getpictures/?id=1
+                Api_Endpoint: http://127.0.0.1:8000/movie/getpictures/?id=1
                 Response: Object with List Of Data
                 
             '''
@@ -90,6 +90,14 @@ def searchMovie(request):
         # result={}
         
         if(str(action).lower()=='search_by_name'):
+            
+            '''
+                To Search MOvies By Name.
+                Api_Endpoint: http://127.0.0.1:8000/movie/searchPictures/?action=search_by_name&search_string=test
+                Response: Object with List Of Matchng Data
+
+            '''
+
            
             try:
                 print('search_by_name')
@@ -120,7 +128,12 @@ def searchMovie(request):
 
         
         elif(str(action).lower()=='search_by_genre'):
-            
+            '''
+                To Search MOvies By Genre.
+                Api_Endpoint: http://127.0.0.1:8000/movie/searchPictures/?action=search_by_genre&search_string=comedy
+                Response: Object with List Of Matchng Data
+
+            '''
             try:
                 print('in search genre')
                 search_genre=request.GET['search_string']
@@ -155,7 +168,7 @@ def searchMovie(request):
 
     # return Response(result,status=status.HTTP_200_OK)
 
-# permission_classes = (IsAuthenticated,)
+permission_classes = (IsAuthenticated,)
 def createMovies(request):
     print('request,request',request)
     print('request,request',request.user)
@@ -172,7 +185,7 @@ def createMovies(request):
     if(User.objects.get(username=request.user).is_superuser):
         '''
             To add movie 
-            Api_Endpoint: http://127.0.0.1:7000/movie/getpictures/
+            Api_Endpoint: http://127.0.0.1:7000/movie/createPictures/?action=create
             Request Body: {
                                 "action":"create",
                                 "formdata":[{
@@ -206,14 +219,17 @@ def createMovies(request):
                         result['status']=item['name']+' Successfully added!'
                     
                 # Picture.save()
+                template="create.html"
             except Exception as e:
                 result['status']=e
                 print(e)
+                template="error.html"
                 pass
             finally:
                 # Picture.save()
+                status=result['status']
                 print('in finally')
-                return render(request,"error.html",{'result':result})
+                return render(request,template,{'status':status})
                     
     else:
         
@@ -222,12 +238,13 @@ def createMovies(request):
         
         '''
         result['status']='User Not Authenticated to perform action'
-        return render(request,"error.html",{'result':result})
+        return render(request,"authenticate.html",{'result':result})
     
         # return Response(result,status=status.HTTP_200_OK)
 
     # return Response(result,status=status.HTTP_200_OK)
 
+permission_classes = (IsAuthenticated,)
 def deleteMovie(request):
     result={}
     result_obj=None
@@ -235,7 +252,7 @@ def deleteMovie(request):
     try:
         '''
             Validation Check to delete movie by id (only superuser can delete)
-            Api EndPoint: http://127.0.0.1:7000/movie/getpictures/?id=6
+            Api EndPoint: http://127.0.0.1:7000/movie/deletePictures/?id=6
             Response: Movie_Name deleted successfully!
         '''
         if(User.objects.get(username=request.user).is_superuser):
@@ -269,6 +286,8 @@ def deleteMovie(request):
 
 
 
+
+# POSTMAN
 class MyPicture(APIView):
 
     """
